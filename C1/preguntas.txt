@@ -1,0 +1,54 @@
+##Un atributo de tipo estático requiere de un instanciamiento para poder ser ejecutado u usado por el programa.{F}
+##Los métodos set y get tienen relación con el concepto de:
+{
+~Herencia
+=Encapsulamiento
+~Abstraccion
+}
+##Hay 2 tipos de polimorfismo:
+{
+~De herencia y clase
+=Estatico y Dinamico 
+~Publico y Privado
+~Todas las anteriores 
+}
+##¿Cual es el método estático entre estas opciones?
+{
+=Métodos asociados a una clase y no necesitan de instanciación
+~Métodos asociados a una clase, pero, necesitan de instanciación
+~Métodos asociados a un objeto y a una variable
+}
+##¿Un método estático solo puede acceder a variables estáticas?{T}
+##¿Qué termino se utiliza para describir una clase que no puede ser instanciada directamente y se usa como base para otra clase?
+{
+~Clase base
+=Clase abstracta
+~Clase hija
+~Todas las anteriores
+}
+##Todos son pilares de la POO, excepto por:
+{
+=Estratificación
+~Herencia 
+~Encapsulamiento
+~Polimorfismo
+}
+##¿En POO cual es el objetivo principal de la herencia?
+{
+=Permitir que una clase derive propiedades y métodos de otra clase, facilitando la reutilización de código y la creación de una jerarquía de clases.
+~Definir métodos que puedan ser compartidos por diferentes clases sin necesidad de heredar
+~Proteger los datos internos de una clase para que no puedan ser accedidos directamente desde fuera de la clase.
+}
+##¿Cuál es el propósito de la sobrecarga de métodos en POO?
+{
+~Definir múltiples estancias de una clase.
+~Implementar abstractismo de manera diversa
+=Definir múltiples métodos con el mismo nombre, pero diferentes parámetros
+}
+##¿Qué palabra clave se usa para heredar una clase en Java?
+{
+~Encapsule
+~Fínale
+=Extend
+~Uses
+}
