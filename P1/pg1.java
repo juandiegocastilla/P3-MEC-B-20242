@@ -1,18 +1,17 @@
- */
 public class Fraccion {
     public int numerador;
     public int denominador;
-    {
- void setnumerador(int numerador){
-  this.numerador=numerador};
+    
+ public void setnumerador(int numerador){
+  this.numerador=numerador;}
  
- void setdenominador(int denominador){
- this.denominador=denominador};
+ public void setdenominador(int denominador){
+ this.denominador=denominador;};
   
  
- int getnumerador(){
-  return numerador};
-  int getdenominador(){
-    return denominador};
-    }
+ public int getnumerador(){
+  return numerador;};
+  public int getdenominador(){
+    return denominador;};
+    
 }
