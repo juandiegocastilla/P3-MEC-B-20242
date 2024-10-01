@@ -4,7 +4,10 @@
  */
 package mavenproject1.parcial;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.Timer;
 
 /**
  *
@@ -12,23 +15,25 @@ import java.util.ArrayList;
  */
 public class Eps extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Eps
-     */
+    private Timer timer;
+    private int tiempoTranscurrido = 0;
+    
     public Eps() {
         initComponents();
+         iniciarTimer();
     }
 
    class Paciente{
    int cedula;
    String categoria ;
    String Servicio; 
-   
+    String tiempo;
     public Paciente(int cedula,
-   String categoria , String Servicio) {
+   String categoria , String Servicio,String tiempo) {
         this.cedula=cedula;
         this.categoria=categoria;
         this.Servicio=Servicio;
+        this.tiempo = tiempo;
     }
     
     
@@ -70,7 +75,7 @@ public class Eps extends javax.swing.JFrame {
 
         jLabel1.setText("Usuario Cedula#");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Menor60años ", "AdultoMayor", "Personacondiscapacidad", " " }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -79,7 +84,12 @@ public class Eps extends javax.swing.JFrame {
 
         jLabel2.setText("Categoria (edad)");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Consultamedicaespecializada", "Pruebadelaboratorio", "imagnesdiagnostico", "Consultamedicageneral" }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Servicio Solicitado");
 
@@ -111,7 +121,7 @@ public class Eps extends javax.swing.JFrame {
                         .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jComboBox2, 0, 146, Short.MAX_VALUE)
+                                .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel2)
                                 .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel1)
@@ -120,10 +130,10 @@ public class Eps extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(25, 25, 25)
                                 .addComponent(jButton1))))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(14, 14, 14)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -173,17 +183,52 @@ public class Eps extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-       
+     
     }//GEN-LAST:event_jComboBox1ActionPerformed
-int indice=0;
+
+ArrayList<Paciente> listaPacientes = new ArrayList<>();
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        ArrayList<Paciente> listaPacientes = new ArrayList<>();
+        
         
         int cedula= Integer.parseInt(jTextField1.getText());
         String categoria = jComboBox1.getSelectedItem().toString();
         String servicio = jComboBox2.getSelectedItem().toString();
+          String tiempoTranscurridoFormato = convertirATiempo(tiempoTranscurrido);
         
+        Paciente nuevoPaciente = new Paciente(cedula, categoria, servicio,tiempoTranscurridoFormato);
+            listaPacientes.add(nuevoPaciente);
+          
+     
+    for (Paciente paciente : listaPacientes) {
+        jTextArea2.append("Cédula: " + paciente.cedula + 
+                          " | Categoría: " + paciente.categoria + 
+                          " | Servicio: " + paciente.Servicio + 
+                          " | Tiempo: " + paciente.tiempo + "\n");
+    
+}
     }//GEN-LAST:event_jButton1ActionPerformed
+private void iniciarTimer() {
+        timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tiempoTranscurrido++;
+              
+                String tiempoFormato = convertirATiempo(tiempoTranscurrido);
+                jTextField2.setText("Tiempo transcurrido: " + tiempoFormato);
+            }
+        });
+        timer.start(); 
+    }
+
+    private String convertirATiempo(int totalSegundos) {
+        int horas = totalSegundos / 3600;
+        int minutos = (totalSegundos % 3600) / 60;
+        int segundos = totalSegundos % 60;
+        return String.format("%02d:%02d:%02d", horas, minutos, segundos);
+    }
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+     
+    }//GEN-LAST:event_jComboBox2ActionPerformed
 
     /**
      * @param args the command line arguments
