@@ -7,6 +7,9 @@ package mavenproject1.parcial;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+
 import javax.swing.Timer;
 
 /**
@@ -17,7 +20,8 @@ public class Eps extends javax.swing.JFrame {
 
     private Timer timer;
     private int tiempoTranscurrido = 0;
-    
+    private static final int limite= 10;
+    private boolean primerRegistro = true;
     public Eps() {
         initComponents();
          iniciarTimer();
@@ -108,8 +112,10 @@ public class Eps extends javax.swing.JFrame {
         jTextArea2.setRows(5);
         jScrollPane2.setViewportView(jTextArea2);
 
+        jSlider1.setMajorTickSpacing(10);
         jSlider1.setPaintLabels(true);
         jSlider1.setPaintTicks(true);
+        jSlider1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -140,8 +146,8 @@ public class Eps extends javax.swing.JFrame {
                 .addGap(118, 118, 118))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jSlider1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(135, 135, 135))
+                .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(96, 96, 96))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,9 +176,9 @@ public class Eps extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pack();
@@ -186,7 +192,7 @@ public class Eps extends javax.swing.JFrame {
      
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
-ArrayList<Paciente> listaPacientes = new ArrayList<>();
+Queue<Paciente> colaPacientes = new LinkedList<>();
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
         
@@ -196,24 +202,53 @@ ArrayList<Paciente> listaPacientes = new ArrayList<>();
           String tiempoTranscurridoFormato = convertirATiempo(tiempoTranscurrido);
         
         Paciente nuevoPaciente = new Paciente(cedula, categoria, servicio,tiempoTranscurridoFormato);
-            listaPacientes.add(nuevoPaciente);
-          
+           colaPacientes.offer(nuevoPaciente);
+           
+          if (colaPacientes.size() > limite) {
+            colaPacientes.poll(); 
+        }
+        
+       
      imprimir();
    
     }//GEN-LAST:event_jButton1ActionPerformed
-
+ private void registrarSiguientePaciente() {
+     jTextArea1.setText(""); 
+if (primerRegistro && colaPacientes.size() == limite) {
+            
+            Paciente paciente = colaPacientes.poll(); 
+            if (paciente != null) {
+                jTextArea1.append("Registrando paciente:\n" +
+                        "Cédula: " + paciente.cedula + 
+                        " | Categoría: " + paciente.categoria + 
+                        " | Servicio: " + paciente.Servicio + 
+                        " | Tiempo: " + paciente.tiempo + "\n");
+                primerRegistro = false; 
+            }
+        } else if (!primerRegistro && !colaPacientes.isEmpty()) {
+          
+            Paciente paciente = colaPacientes.poll(); 
+            if (paciente != null) {
+                jTextArea1.append("Registrando paciente:\n" +
+                        "Cédula: " + paciente.cedula + 
+                        " | Categoría: " + paciente.categoria + 
+                        " | Servicio: " + paciente.Servicio + 
+                        " | Tiempo: " + paciente.tiempo + "\n");
+            }
+        }
+ }
     private void imprimir(){
+        int personas=0;
        jTextArea2.setText(""); 
-        for (Paciente paciente : listaPacientes) {
+        for (Paciente paciente : colaPacientes) {
         jTextArea2.append("Cédula: " + paciente.cedula + 
                           " | Categoría: " + paciente.categoria + 
                           " | Servicio: " + paciente.Servicio + 
                           " | Tiempo: " + paciente.tiempo + "\n");
-    
-}
-    
-    
-    }
+   
+}}
+      
+   
     
     
     private void iniciarTimer() {
@@ -221,7 +256,8 @@ ArrayList<Paciente> listaPacientes = new ArrayList<>();
             @Override
             public void actionPerformed(ActionEvent e) {
                 tiempoTranscurrido++;
-              
+              registrarSiguientePaciente(); 
+              imprimir();
                 String tiempoFormato = convertirATiempo(tiempoTranscurrido);
                 jTextField2.setText("Tiempo transcurrido: " + tiempoFormato);
             }
