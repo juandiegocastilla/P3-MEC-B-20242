@@ -198,16 +198,25 @@ ArrayList<Paciente> listaPacientes = new ArrayList<>();
         Paciente nuevoPaciente = new Paciente(cedula, categoria, servicio,tiempoTranscurridoFormato);
             listaPacientes.add(nuevoPaciente);
           
-     
-    for (Paciente paciente : listaPacientes) {
+     imprimir();
+   
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void imprimir(){
+       jTextArea2.setText(""); 
+        for (Paciente paciente : listaPacientes) {
         jTextArea2.append("Cédula: " + paciente.cedula + 
                           " | Categoría: " + paciente.categoria + 
                           " | Servicio: " + paciente.Servicio + 
                           " | Tiempo: " + paciente.tiempo + "\n");
     
 }
-    }//GEN-LAST:event_jButton1ActionPerformed
-private void iniciarTimer() {
+    
+    
+    }
+    
+    
+    private void iniciarTimer() {
         timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
